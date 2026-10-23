@@ -17,12 +17,14 @@ export interface SyllabusVariant {
   days: DayPlan[];
 }
 
+export type DurationKey = '1day' | '2days' | '3days' | '5days' | '6days';
+
 export interface TrackData {
   id: string;
   title: string;
   shortTitle: string;
   tagline: string;
-  category: 'Artificial Intelligence' | 'Full Stack Engineering' | 'Applied Deeptech';
+  category: 'Artificial Intelligence' | 'Full Stack Engineering' | 'Applied Deeptech' | 'Creative AI & Media' | 'Robotics & Hardware' | string;
   badge: string;
   level: string;
   rating: number;
@@ -37,10 +39,15 @@ export interface TrackData {
   toolsAndTech: string[];
   careerRoles: string[];
   learningOutcomes: string[];
+  deliveryMode?: 'Offline On-Campus' | 'Offline & On-Campus' | 'Hybrid / Offline' | string;
+  defaultDuration?: DurationKey;
   syllabi: {
-    '3days': SyllabusVariant;
-    '5days': SyllabusVariant;
-    '6days': SyllabusVariant;
+    '1day'?: SyllabusVariant;
+    '2days'?: SyllabusVariant;
+    '3days'?: SyllabusVariant;
+    '5days'?: SyllabusVariant;
+    '6days'?: SyllabusVariant;
+    [key: string]: SyllabusVariant | undefined;
   };
 }
 
@@ -2201,6 +2208,284 @@ export const TRACKS_DATA: TrackData[] = [
             ],
             handsOnLab: 'Deploying the complete Institutional Event Platform with full SEO tags.',
             deliverable: 'Production live web URL with perfect 100 SEO & Accessibility score.'
+          }
+        ]
+      }
+    }
+  },
+  {
+    id: 'ai-film-making',
+    title: 'AI Film Making & Generative Cinema',
+    shortTitle: 'AI Film Making',
+    tagline: 'Master end-to-end AI film direction: screenplay writing, character consistency, video generation, voice cloning, and audio scoring in 48 hours.',
+    category: 'Creative AI & Media',
+    badge: '2-Day Offline Workshop',
+    level: 'Beginner to Advanced (No Film Gear Required)',
+    rating: 4.98,
+    reviewsCount: 1940,
+    studentsTrained: '18,500+',
+    partnerColleges: '110+',
+    heroGradient: 'from-rose-500 via-orange-500 to-amber-500',
+    iconName: 'Film',
+    image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=compress&cs=tinysrgb&w=800',
+    deliveryMode: 'Offline On-Campus Workshop',
+    defaultDuration: '2days',
+    overview: 'An intensive, hands-on offline college workshop where students learn to produce festival-grade cinematic short films using state-of-the-art Generative AI. Guided in-person by creative directors and prompt engineers, students write structured 3-act screenplays with Claude 3.5, generate photorealistic visual storyboards with Midjourney and Flux, synthesize cinematic video camera motions with Runway Gen-3 and Luma Dream Machine, clone character voices with ElevenLabs, compose original film scores with Suno AI, and edit a complete 4K short film premiered live on the college auditorium stage.',
+    prerequisites: ['Laptop with Google Chrome or modern web browser', 'Passion for storytelling and visual creation (No prior video editing, camera gear, or programming required)'],
+    toolsAndTech: ['Runway Gen-3 Alpha', 'Midjourney v6.1', 'Flux.1 Schnell', 'Luma Dream Machine', 'ElevenLabs Voice Studio', 'Suno AI v3.5', 'Claude 3.5 Sonnet', 'CapCut Pro AI', 'Hedra Lip-Sync', 'Topaz Video AI'],
+    careerRoles: ['AI Film Director', 'Generative Media Creator', 'Prompt Cinematographer', 'Creative AI Technologist', 'AI Post-Production Specialist'],
+    learningOutcomes: [
+      'Write professional cinematic screenplays, director treatments, and shot lists with Claude 3.5.',
+      'Achieve photorealistic keyframes with character, facial, and stylistic consistency using Midjourney and Flux.',
+      'Direct dynamic camera movements (dolly, crane, pan, zoom, orbit) from static concepts using Runway Gen-3 and Luma.',
+      'Produce studio-quality emotional character voice acting with ElevenLabs and original musical scores with Suno AI.',
+      'Assemble, color-grade, sync dialogue, upscale to 4K, and premiere a complete AI short film on stage.'
+    ],
+    syllabi: {
+      '2days': {
+        durationLabel: '2-Day Intensive Offline Film Making Workshop',
+        hours: '14 Hours (7 hrs / day)',
+        recommendedFor: 'Colleges seeking a high-energy 48-hour on-campus creative-tech workshop where every student team produces and premieres a completed AI short film.',
+        description: 'Complete 2-day on-campus film sprint: from screenplay ideation and photorealistic character consistency to dynamic video generation, AI voice acting, sound design, and auditorium screening.',
+        capstoneTitle: 'Original 4K AI Short Film Auditorium Premiere',
+        capstoneDescription: 'Teams direct, generate, edit, and premiere an original 2 to 3-minute AI cinematic short film with dialogue, original music, sound effects, and title cards before a campus jury.',
+        days: [
+          {
+            dayNumber: 1,
+            title: 'Screenwriting, Visual Worldbuilding & Character Consistency',
+            focus: 'Narrative Architecture, Midjourney / Flux Prompting & Character Consistency Across Scenes',
+            topics: [
+              'The AI Cinema Revolution: Breakdown of modern studio generative filmmaking pipelines',
+              'Screenwriting with Claude 3.5 Sonnet: 3-act story structure, visual beat sheets, and camera shot listing',
+              'Photorealistic Image Generation with Midjourney v6.1 & Flux: Lens emulation (35mm anamorphic), focal lengths, and cinematic lighting setups',
+              'Character & Stylistic Consistency: Utilizing reference weights, seed locking, face vectors, and IP-Adapter techniques across multiple scene angles',
+              'Directing Motion with Runway Gen-3 & Luma Dream Machine: Converting static concept stills into cinematic camera motions (pans, tilts, dolly zooms, crane shots)'
+            ],
+            handsOnLab: 'Write an original 6-scene screenplay, generate consistent protagonist character sheets, and render the first 10 dynamic cinematic video shots.',
+            deliverable: 'Approved visual screenplay, character consistency sheet, and 10 raw generated video sequences (MP4).'
+          },
+          {
+            dayNumber: 2,
+            title: 'AI Voice Acting, Sound Design, Video Assembly & Stage Premiere',
+            focus: 'ElevenLabs Voice Synthesis, Suno AI Original Score, Lip-Syncing, Assembly & Live Auditorium Screening',
+            topics: [
+              'AI Voice Acting & Cloning with ElevenLabs: Emotional modulation, dialogue pacing, accent selection, and multilingual dubbing',
+              'Cinematic Scoring & Audio Engineering with Suno AI v3.5: Composing thematic motifs, orchestral background tracks, and ambient Foley soundscapes',
+              'AI Lip-Syncing & Facial Performance Capture: Synchronizing speech to character portraits using Hedra and LivePortrait',
+              'Timeline Assembly & Post-Production in CapCut / DaVinci: Pacing, match cutting, motion transitions, color grading, and AI 4K upscaling with Topaz',
+              'Offline Campus Film Festival: Live auditorium projection, jury evaluation, audience applause, and certificate distribution'
+            ],
+            handsOnLab: 'Assemble all video clips, align cloned character voice tracks, mix background music and sound effects, and render the final 1080p/4K master file.',
+            deliverable: 'Finished 2 to 3-minute original AI Short Film with full audio, soundtrack, and credits premiered on stage.'
+          }
+        ]
+      },
+      '1day': {
+        durationLabel: '1-Day Fast-Track AI Video Creator Workshop',
+        hours: '8 Hours (Intensive Single-Day Sprint)',
+        recommendedFor: 'College technical symposiums, media clubs, and fest workshops seeking immediate, viral video production results.',
+        description: 'Accelerated single-day deep dive into prompt-to-video tools, crafting viral AI commercials, high-impact movie trailers, and visual teasers.',
+        capstoneTitle: 'AI Commercial & Cinematic Teaser Trailer',
+        capstoneDescription: 'Teams produce a high-impact 60-second commercial or film trailer with dynamic camera movement, synthetic voiceover, and original audio.',
+        days: [
+          {
+            dayNumber: 1,
+            title: 'Rapid AI Cinematography, Image-to-Video & Trailer Production',
+            focus: 'Prompt-to-Image, Gen-3 Video Generation, Voice Synthesis & Rapid Trailer Assembly',
+            topics: [
+              'Cinematic prompt engineering: Visual styles, lighting setups, and camera angles',
+              'Converting prompt images into motion shots with Runway Gen-3 and Luma',
+              'Synthesizing narration with ElevenLabs and background music with Suno',
+              'Rapid timeline assembly, beat-matching, and final export'
+            ],
+            handsOnLab: 'Generate 8 cinematic shots, add voiceover and music, and edit a 60-second teaser trailer.',
+            deliverable: 'Complete 60-second cinematic teaser trailer exported in full HD.'
+          }
+        ]
+      },
+      '3days': {
+        durationLabel: '3-Day Advanced Cinematic AI Studio & VFX Masterclass',
+        hours: '21 Hours (7 hrs / day)',
+        recommendedFor: 'Colleges seeking an extended production studio experience with VFX inpainting, 3D camera tracking, and deep narrative depth.',
+        description: 'Comprehensive 3-day film school curriculum combining scriptwriting, advanced inpainting, multitrack audio engineering, and theatrical grading.',
+        capstoneTitle: 'Multi-Scene Sci-Fi / Drama Short Film with Custom VFX',
+        capstoneDescription: 'Full-length 4-minute short film featuring multiple locations, complex character dialogues, original orchestral score, and advanced AI VFX.',
+        days: [
+          {
+            dayNumber: 1,
+            title: 'Screenplay, Visual Worldbuilding & Character Consistency',
+            focus: 'Storyboarding, Character Design & Prompt Mastery',
+            topics: [
+              'Loglines, character bibles, and multi-location treatments with Claude 3.5',
+              'Midjourney & Flux photorealism: lighting, costume consistency, and camera framing',
+              'Establishing continuity rules and seed persistence'
+            ],
+            handsOnLab: 'Generate a 12-scene storyboard and complete character model pack.',
+            deliverable: 'Detailed visual screenplay with full shot breakdown.'
+          },
+          {
+            dayNumber: 2,
+            title: 'Advanced Motion Directing, Video-to-Video & AI Inpainting',
+            focus: 'Camera Movement, Video Inpainting, and Generative VFX',
+            topics: [
+              'Runway Gen-3 motion brush, multi-motion control, and camera velocity curves',
+              'Video-to-Video transformation and stylistic morphing',
+              'AI inpainting to remove artifacts and replace background set elements'
+            ],
+            handsOnLab: 'Direct 20 dynamic video shots with camera motion and custom inpainting.',
+            deliverable: 'Folder of approved cinematic takes ready for editorial timeline.'
+          },
+          {
+            dayNumber: 3,
+            title: 'Multitrack Audio Engineering, Color Grading & Theatrical Screening',
+            focus: 'Audio Post-Production, Foley, Dialogue Mastering & Stage Exhibition',
+            topics: [
+              'ElevenLabs character dialogue mixing and room acoustic simulation',
+              'Suno AI composition, stem separation, and audio ducking',
+              'Cinematic color grading (LUTs), titles, credits, and 4K upscaling',
+              'Grand campus screening, jury evaluation, and certificates'
+            ],
+            handsOnLab: 'Full post-production assembly and live auditorium screening.',
+            deliverable: 'Festival-ready 4K short film with theatrical credits and original poster.'
+          }
+        ]
+      }
+    }
+  },
+  {
+    id: 'robotics',
+    title: 'Autonomous Robotics & Embedded Hardware Engineering',
+    shortTitle: 'Robotics',
+    tagline: 'Assemble microcontrollers, wire motor drivers, interface ultrasonic sensors, and build an autonomous obstacle-avoiding robot in 1 day.',
+    category: 'Robotics & Hardware',
+    badge: '1-Day Offline Workshop',
+    level: 'Beginner to Intermediate (Hands-on Physical Hardware Kits)',
+    rating: 4.96,
+    reviewsCount: 2150,
+    studentsTrained: '24,000+',
+    partnerColleges: '140+',
+    heroGradient: 'from-emerald-500 via-teal-500 to-cyan-600',
+    iconName: 'Cpu',
+    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=compress&cs=tinysrgb&w=800',
+    deliveryMode: 'Offline On-Campus Workshop',
+    defaultDuration: '1day',
+    overview: 'An electrifying 100% offline, hands-on hardware engineering workshop conducted directly at your college lab or auditorium. Every student team receives a physical robotics hardware kit comprising microcontrollers (Arduino / ESP32), L298N motor drivers, dual DC gear motors, HC-SR04 ultrasonic sonar sensors, and robot chassis. Guided in-person by embedded hardware engineers, students learn circuit schematic reading, breadboard wiring, embedded C programming, sensor calibration, and build an autonomous mobile robot that navigates real-world obstacle arenas in a thrilling campus competition.',
+    prerequisites: ['Curiosity for electronics and physical mechanics', 'Basic familiarity with logical thinking or C/C++ syntax (prior hardware experience NOT required)'],
+    toolsAndTech: ['Arduino Uno / ESP32', 'Arduino IDE', 'L298N Dual H-Bridge Driver', 'HC-SR04 Ultrasonic Sonar', 'Infrared (IR) Sensors', 'Embedded C/C++', 'PWM Motor Control', 'Serial Monitor Diagnostics', 'Physical Robot Chassis Kit'],
+    careerRoles: ['Robotics Engineer', 'Embedded Systems Developer', 'IoT Hardware Engineer', 'Firmware Developer', 'Mechatronics Specialist'],
+    learningOutcomes: [
+      'Read electronics schematics, wire breadboards, and interface microcontrollers with real-world actuators.',
+      'Program digital I/O pins, analog inputs, and Pulse Width Modulation (PWM) for precise motor speed regulation.',
+      'Interface and calibrate ultrasonic sonar and infrared proximity sensors to read real-time distance measurements.',
+      'Develop closed-loop autonomous navigation algorithms with obstacle detection, evasion, and recovery states.',
+      'Compete in a live campus obstacle track tournament with physical robot time trials and awards.'
+    ],
+    syllabi: {
+      '1day': {
+        durationLabel: '1-Day Hands-on Hardware Workshop',
+        hours: '8 Hours (Intensive Single-Day Lab)',
+        recommendedFor: 'Engineering colleges seeking an impactful 1-day offline workshop where every student team builds and tests a working autonomous robot.',
+        description: 'Complete hardware assembly to autonomous navigation: unboxing kits, circuit wiring, embedded C programming, sonar interfacing, and the live Campus Robotics Grand Prix.',
+        capstoneTitle: 'Autonomous Obstacle-Avoiding Mobile Robot',
+        capstoneDescription: 'Teams wire, code, and test an autonomous wheeled robot that navigates a complex physical maze and obstacle track without human intervention or collisions.',
+        days: [
+          {
+            dayNumber: 1,
+            title: 'Physical Assembly, Embedded C Programming & Autonomous Rover Grand Prix',
+            focus: 'Hardware Kit Unboxing, Chassis Assembly, L298N Motor Driver Wiring, Sonar Interfacing & Live Arena Competition',
+            topics: [
+              'Microcontroller Architecture: Deep-dive into ATmega328P / ESP32, GPIO pins, registers, and power isolation',
+              'Physical Robot Assembly: Mounting dual DC gear motors, caster wheels, and rigid acrylic chassis',
+              'Motor Control Mechanics: Wiring L298N H-Bridge dual driver, direction switching, and PWM speed control in Embedded C',
+              'Sensor Interfacing: Working principle of HC-SR04 ultrasonic sensors, sound wave time-of-flight math, and real-time distance calculation',
+              'Autonomous Decision Logic: Implementing state machines for obstacle detection, stopping distance thresholding, and evasive turning maneuvers',
+              'Campus Robotics Tournament: Time trials, obstacle arena navigation, speed testing, and certificate ceremony'
+            ],
+            handsOnLab: 'Assemble the physical robot kit, wire the breadboard circuit, write the navigation firmware in Arduino IDE, and tune the avoidance parameters in the obstacle arena.',
+            deliverable: 'A fully assembled, programmed, and calibrated Autonomous Obstacle-Avoiding Mobile Robot successfully navigating the physical obstacle track.'
+          }
+        ]
+      },
+      '2days': {
+        durationLabel: '2-Day IoT & Smart Autonomous Robotics Bootcamp',
+        hours: '16 Hours (8 hrs / day)',
+        recommendedFor: 'Colleges wanting a 2-day hands-on experience combining autonomous obstacle navigation with smartphone Bluetooth/WiFi teleoperation and IoT telemetry.',
+        description: 'Comprehensive 2-day hardware bootcamp: Day 1 covers autonomous obstacle navigation; Day 2 adds wireless communication, smartphone app control, and telemetry data streaming.',
+        capstoneTitle: 'Dual-Mode Autonomous & Smartphone-Controlled IoT Rover',
+        capstoneDescription: 'Teams engineer a dual-mode robot capable of autonomous navigation and real-time manual override via a custom mobile app with live telemetry.',
+        days: [
+          {
+            dayNumber: 1,
+            title: 'Hardware Assembly, Motor Drivers & Autonomous Obstacle Navigation',
+            focus: 'Chassis Assembly, Motor Driving, Sonar Sensors & Autonomous Collision Avoidance',
+            topics: [
+              'Embedded fundamentals, Arduino/ESP32 pinouts, and breadboard circuit power distribution',
+              'Interfacing L298N H-Bridge motor drivers with dual DC gear motors using PWM',
+              'HC-SR04 ultrasonic sensor math, ping routines, and trigger/echo timing',
+              'Autonomous obstacle detection and 3-stage evasion state machine (Stop, Scan, Turn)'
+            ],
+            handsOnLab: 'Assemble hardware chassis and calibrate autonomous obstacle avoidance.',
+            deliverable: 'Fully functional autonomous rover navigating obstacles.'
+          },
+          {
+            dayNumber: 2,
+            title: 'Wireless Teleoperation, Bluetooth/WiFi Interfacing & Mobile App Control',
+            focus: 'ESP32 / HC-05 Bluetooth Integration, Wireless Serial Communication & Mobile App UI',
+            topics: [
+              'Wireless protocols: Bluetooth SPP vs BLE vs WiFi WebSockets for robotics control',
+              'Interfacing Bluetooth modules with microcontroller serial UART pins',
+              'Parsing command packets for forward, reverse, steering, and speed adjustment',
+              'Dual-mode firmware switching: Toggling between autonomous mode and smartphone teleoperation',
+              'Campus Maze Championship: Obstacle courses, time trials, and certificates'
+            ],
+            handsOnLab: 'Configure Bluetooth firmware, connect to smartphone controller app, and navigate the timed slalom track.',
+            deliverable: 'Dual-mode autonomous and smartphone teleoperated mobile robot with live wireless control.'
+          }
+        ]
+      },
+      '3days': {
+        durationLabel: '3-Day Advanced Robotics, ROS & Edge AI Masterclass',
+        hours: '24 Hours (8 hrs / day)',
+        recommendedFor: 'Advanced engineering students, ECE/EEE/Mech departments, and robotics clubs seeking edge vision and autonomous line-tracking.',
+        description: 'Extended 3-day deep dive covering embedded hardware, PID line tracking, and camera-based edge detection.',
+        capstoneTitle: 'Multi-Sensor Intelligent Arena Rover with Line & Obstacle Tracking',
+        capstoneDescription: 'Advanced mobile robot utilizing sensor fusion (IR array + Ultrasonic + Gyro) to navigate high-speed tracks with PID control.',
+        days: [
+          {
+            dayNumber: 1,
+            title: 'Embedded Hardware, Kinematics & Power Distribution',
+            focus: 'Robot Chassis, Microcontrollers, and High-Current Motor Interfacing',
+            topics: [
+              'Power isolation between logic circuits and motor inductive spikes',
+              'Differential drive kinematics and encoder feedback principles',
+              'PWM speed profiles and motor acceleration curves'
+            ],
+            handsOnLab: 'Assemble chassis, wire high-current battery pack, and verify motor velocity curves.',
+            deliverable: 'Calibrated mobile platform with bi-directional motor control.'
+          },
+          {
+            dayNumber: 2,
+            title: 'Multi-Sensor Fusion & PID Line Following Algorithm',
+            focus: 'Infrared Sensor Array, Sonar Fusion & Closed-Loop PID Control',
+            topics: [
+              'Calibrating 5-channel IR reflective sensor arrays for surface contrast',
+              'Proportional-Integral-Derivative (PID) algorithm implementation for trajectory tracking',
+              'Fusing ultrasonic sonar for dynamic obstacle interception while on line'
+            ],
+            handsOnLab: 'Tune PID constants (Kp, Ki, Kd) on a serpentine test track.',
+            deliverable: 'High-speed autonomous line follower with obstacle stop & go capability.'
+          },
+          {
+            dayNumber: 3,
+            title: 'Edge AI Vision Integration, Wireless Telemetry & Grand Championship',
+            focus: 'ESP32-CAM Edge Vision, Wireless Telemetry & Tournament',
+            topics: [
+              'Streaming video and color blob detection using ESP32-CAM module',
+              'Visual target tracking and automated docking logic',
+              'Live tournament race, final presentations, and industry certificate ceremony'
+            ],
+            handsOnLab: 'Mount camera module, configure target following, and compete in the grand championship.',
+            deliverable: 'Vision-assisted intelligent mobile robot and competition rank certificate.'
           }
         ]
       }

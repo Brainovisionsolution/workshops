@@ -19,6 +19,7 @@ const ProposalForm = () => {
     department: 'Computer Science & Engineering (CSE)',
     track: trackParam,
     duration: durationParam,
+    deliveryMode: 'offline',
     expectedStudents: '100 - 150 Students',
     tentativeDate: '',
     comments: '',
@@ -223,6 +224,8 @@ const ProposalForm = () => {
                       onChange={handleChange}
                       className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-xs sm:text-sm text-gray-800 dark:text-white outline-none focus:border-orange-500"
                     >
+                      <option value="1day">1-Day Offline Workshop (8 Hours - e.g. Robotics Kit Sprint)</option>
+                      <option value="2days">2-Day Offline Workshop (14 Hours - e.g. AI Film Making)</option>
                       <option value="3days">3-Day Fast-Track Workshop (18 Hours)</option>
                       <option value="5days">5-Day Comprehensive Bootcamp (30 Hours)</option>
                       <option value="6days">6-Day Advanced Masterclass &amp; FDP (36 Hours)</option>
@@ -248,17 +251,35 @@ const ProposalForm = () => {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                    Tentative Preferred Date
-                  </label>
-                  <input
-                    type="date"
-                    name="tentativeDate"
-                    value={formData.tentativeDate}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-xs sm:text-sm text-gray-800 dark:text-white outline-none focus:border-orange-500"
-                  />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                      Workshop Delivery Mode *
+                    </label>
+                    <select
+                      name="deliveryMode"
+                      value={formData.deliveryMode}
+                      onChange={handleChange}
+                      className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-xs sm:text-sm text-gray-800 dark:text-white outline-none focus:border-orange-500"
+                    >
+                      <option value="offline">Offline / In-Person (At College Campus Lab)</option>
+                      <option value="hybrid">Hybrid (Online Lectures + Offline Lab Mentoring)</option>
+                      <option value="online">Virtual / Online Live Streaming</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                      Tentative Preferred Date
+                    </label>
+                    <input
+                      type="date"
+                      name="tentativeDate"
+                      value={formData.tentativeDate}
+                      onChange={handleChange}
+                      className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-xs sm:text-sm text-gray-800 dark:text-white outline-none focus:border-orange-500"
+                    />
+                  </div>
                 </div>
 
                 <div>

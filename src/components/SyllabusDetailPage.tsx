@@ -25,9 +25,14 @@ import {
   ChevronRight,
   Send,
   Star,
-  FileText
+  FileText,
+  Film,
+  Cpu,
+  MapPin,
+  Video,
+  Wrench
 } from 'lucide-react';
-import { TRACKS_DATA, getTrackById, TrackData } from '../data/tracksData';
+import { TRACKS_DATA, getTrackById, TrackData, DurationKey } from '../data/tracksData';
 
 const iconMap: Record<string, React.FC<{ className?: string }>> = {
   BrainCircuit,
@@ -39,12 +44,33 @@ const iconMap: Record<string, React.FC<{ className?: string }>> = {
   Layers,
   Wand2,
   Globe,
+  Film,
+  Cpu,
+  Video,
+  Wrench,
+};
+
+const durationMeta: Record<DurationKey, { label: string; sub: string }> = {
+  '1day': { label: '1 Day', sub: 'Hands-on Lab (8 hrs)' },
+  '2days': { label: '2 Days', sub: 'Offline Sprint (14 hrs)' },
+  '3days': { label: '3 Days', sub: 'Fast Track (18 hrs)' },
+  '5days': { label: '5 Days', sub: 'Bootcamp (30 hrs)' },
+  '6days': { label: '6 Days', sub: 'Masterclass (36 hrs)' },
 };
 
 const SyllabusDetailPage: React.FC = () => {
   const { trackId } = useParams<{ trackId: string }>();
   const navigate = useNavigate();
-  const [selectedDuration, setSelectedDuration] = useState<'3days' | '5days' | '6days'>('5days');
+
+  // Find track or fallback to first
+  const currentTrack: TrackData = getTrackById(trackId || 'genai') || TRACKS_DATA[1];
+  
+  const availableDurations = (['1day', '2days', '3days', '5days', '6days'] as DurationKey[]).filter(
+    (d) => !!currentTrack.syllabi[d]
+  );
+  const initialDuration = currentTrack.defaultDuration || availableDurations[0] || '5days';
+
+  const [selectedDuration, setSelectedDuration] = useState<DurationKey>(initialDuration);
   const [activeDayIndex, setActiveDayIndex] = useState(0);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [registerSuccess, setRegisterSuccess] = useState(false);
@@ -56,15 +82,20 @@ const SyllabusDetailPage: React.FC = () => {
     role: 'Student',
   });
 
-  // Find track or fallback to first
-  const currentTrack: TrackData = getTrackById(trackId || 'genai') || TRACKS_DATA[1];
-
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setActiveDayIndex(0);
-  }, [trackId]);
+    const trackDurations = (['1day', '2days', '3days', '5days', '6days'] as DurationKey[]).filter(
+      (d) => !!currentTrack.syllabi[d]
+    );
+    if (currentTrack.defaultDuration && currentTrack.syllabi[currentTrack.defaultDuration]) {
+      setSelectedDuration(currentTrack.defaultDuration);
+    } else if (!currentTrack.syllabi[selectedDuration]) {
+      setSelectedDuration(trackDurations[0] || '3days');
+    }
+  }, [trackId, currentTrack]);
 
-  const activeSyllabus = currentTrack.syllabi[selectedDuration];
+  const activeSyllabus = currentTrack.syllabi[selectedDuration] || currentTrack.syllabi[availableDurations[0]]!;
   const IconComponent = iconMap[currentTrack.iconName] || BrainCircuit;
 
   const handleDownloadSyllabus = () => {
@@ -229,18 +260,18 @@ Brainovision Technologies Private Limited
               </div>
 
               <div className="space-y-2 text-xs text-gray-600 dark:text-gray-300 py-2 border-y border-gray-100 dark:border-gray-700">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  <span>3-Day Fast Track (18 Hours)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  <span>5-Day Comprehensive (30 Hours)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  <span>6-Day Advanced / FDP (36 Hours)</span>
-                </div>
+                {currentTrack.deliveryMode && (
+                  <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1.5 rounded-lg border border-emerald-200 dark:border-emerald-800/60">
+                    <MapPin className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>{currentTrack.deliveryMode}</span>
+                  </div>
+                )}
+                {availableDurations.map((dur) => (
+                  <div key={dur} className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>{currentTrack.syllabi[dur]?.durationLabel}</span>
+                  </div>
+                ))}
               </div>
 
               <button
@@ -269,7 +300,7 @@ Brainovision Technologies Private Limited
           </div>
         </div>
 
-        {/* DURATION SWITCHER TABS (3, 5, 6 DAYS) */}
+        {/* DURATION SWITCHER TABS (DYNAMICALLY 1D, 2D, 3D, 5D, 6D) */}
         <div className="mb-10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
@@ -282,30 +313,25 @@ Brainovision Technologies Private Limited
             </div>
 
             {/* Duration Pills */}
-            <div className="inline-flex p-1.5 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md">
-              {(
-                [
-                  { id: '3days', label: '3 Days', sub: 'Fast Track (18 hrs)' },
-                  { id: '5days', label: '5 Days', sub: 'Bootcamp (30 hrs)' },
-                  { id: '6days', label: '6 Days', sub: 'Masterclass (36 hrs)' },
-                ] as const
-              ).map((tab) => {
-                const isActive = selectedDuration === tab.id;
+            <div className="inline-flex flex-wrap p-1.5 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md gap-1">
+              {availableDurations.map((tabId) => {
+                const meta = durationMeta[tabId] || { label: tabId, sub: '' };
+                const isActive = selectedDuration === tabId;
                 return (
                   <button
-                    key={tab.id}
+                    key={tabId}
                     onClick={() => {
-                      setSelectedDuration(tab.id);
+                      setSelectedDuration(tabId);
                       setActiveDayIndex(0);
                     }}
-                    className={`px-4 sm:px-6 py-2.5 rounded-xl font-medium text-xs sm:text-sm transition-all duration-200 flex flex-col items-center ${
+                    className={`px-4 sm:px-5 py-2 rounded-xl font-medium text-xs sm:text-sm transition-all duration-200 flex flex-col items-center ${
                       isActive
                         ? 'bg-gradient-to-r from-yellow-500 via-orange-500 to-amber-500 text-white shadow-md font-semibold'
                         : 'text-gray-600 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400'
                     }`}
                   >
-                    <span>{tab.label}</span>
-                    <span className={`text-[10px] ${isActive ? 'text-white/90' : 'text-gray-400'}`}>{tab.sub}</span>
+                    <span>{meta.label}</span>
+                    <span className={`text-[10px] ${isActive ? 'text-white/90' : 'text-gray-400'}`}>{meta.sub}</span>
                   </button>
                 );
               })}
@@ -329,10 +355,14 @@ Brainovision Technologies Private Limited
               </div>
             </div>
 
-            <div className="flex items-center gap-2 self-start md:self-center shrink-0">
-              <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">Format:</span>
+            <div className="flex flex-wrap items-center gap-2 self-start md:self-center shrink-0">
+              <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">Mode:</span>
+              <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 shadow-sm flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-emerald-500" />
+                <span>{currentTrack.deliveryMode || 'Offline & On-Campus'}</span>
+              </span>
               <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-white dark:bg-gray-800 border border-orange-200 dark:border-gray-700 text-orange-600 dark:text-orange-400 shadow-sm">
-                100% Hands-on Coding
+                100% Hands-on
               </span>
             </div>
           </div>
@@ -736,12 +766,14 @@ Brainovision Technologies Private Limited
                     </label>
                     <select
                       value={selectedDuration}
-                      onChange={(e) => setSelectedDuration(e.target.value as any)}
+                      onChange={(e) => setSelectedDuration(e.target.value as DurationKey)}
                       className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-sm outline-none focus:border-orange-500"
                     >
-                      <option value="3days">3-Day Fast-Track Workshop</option>
-                      <option value="5days">5-Day Comprehensive Bootcamp</option>
-                      <option value="6days">6-Day Advanced Masterclass & FDP</option>
+                      {availableDurations.map((d) => (
+                        <option key={d} value={d}>
+                          {currentTrack.syllabi[d]?.durationLabel} ({currentTrack.syllabi[d]?.hours})
+                        </option>
+                      ))}
                     </select>
                   </div>
 

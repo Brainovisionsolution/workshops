@@ -19,6 +19,8 @@ const Header: React.FC = () => {
   }, []);
 
   const syllabusTracks = [
+    { name: 'AI Film Making (2-Day Offline)', path: '/syllabus/ai-film-making', tag: '2D Offline' },
+    { name: 'Robotics & Hardware (1-Day Offline)', path: '/syllabus/robotics', tag: '1D Offline' },
     { name: 'Generative AI & LLMs', path: '/syllabus/genai', tag: 'High Demand' },
     { name: 'Agentic AI & Swarms', path: '/syllabus/agentic-ai', tag: 'Next-Gen' },
     { name: 'Forward Deployed Eng (FDE)', path: '/syllabus/fde', tag: 'Enterprise' },
@@ -79,7 +81,7 @@ const Header: React.FC = () => {
                     : 'text-gray-700 hover:text-orange-600 dark:text-gray-300 dark:hover:text-yellow-400'
                 }`}
               >
-                <span>Check Syllabus (3/5/6 Days)</span>
+                <span>Check Syllabus (1 to 6 Days)</span>
                 <ChevronDown
                   className={`w-3.5 h-3.5 transition-transform duration-300 ${
                     isSyllabusDropdownOpen ? 'rotate-180 text-orange-500' : ''

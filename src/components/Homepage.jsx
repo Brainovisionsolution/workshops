@@ -4,6 +4,7 @@ import FeaturedTracksSection from './FeaturedTracksSection';
 import LiveWorkshopAnalytics from './LiveWorkshopAnalytics';
 import WorkshopPhotoShowcase from './WorkshopPhotoShowcase';
 import WorkshopBenefits from './WorkshopBenefits';
+import ParticipationModes from './ParticipationModes';
 import WorkshopProcess from './WorkshopProcess';
 import TrustedColleges from './TrustedColleges';
 import Testimonials from './Testimonials';
@@ -16,16 +17,19 @@ const HomePage = () => {
       {/* 1. Stylish & Professional Apple-Grade Hero */}
       <Hero />
 
-      {/* 2. Core 9 Tech Tracks & 3D Interactive Syllabi Cards */}
+      {/* 2. Core Tech Tracks & 3D Interactive Syllabi Cards */}
       <FeaturedTracksSection />
 
       {/* 3. Real Workshop Impact & Animated Data Analytics */}
       <LiveWorkshopAnalytics />
 
-      {/* 4. Live Campus Photography & Workshop Showcase Carousel */}
+      {/* 4. Modes of Workshop Delivery (Spotlight on Offline Workshops) */}
+      <ParticipationModes />
+
+      {/* 5. Live Campus Photography & Workshop Showcase Carousel */}
       <WorkshopPhotoShowcase />
 
-      {/* 5. Workshop Benefits */}
+      {/* 6. Workshop Benefits */}
       <WorkshopBenefits />
 
       {/* 4. 5-Step Execution Process */}

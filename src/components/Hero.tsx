@@ -6,17 +6,29 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const quickTracks = [
+  { id: 'ai-film-making', name: 'AI Film Making (Offline)', badge: '2-Day Workshop' },
+  { id: 'robotics', name: 'Robotics & Hardware (Offline)', badge: '1-Day Lab' },
   { id: 'genai', name: 'GenAI & LLMs', badge: 'High Demand' },
   { id: 'agentic-ai', name: 'Agentic AI & Swarms', badge: 'Next-Gen' },
   { id: 'fde', name: 'Forward Deployed Eng', badge: 'Enterprise' },
   { id: 'mern-stack', name: 'MERN Stack' },
   { id: 'python-fs', name: 'Python Full Stack' },
-  { id: 'jfs', name: 'Java Microservices' },
   { id: 'ai-tools', name: 'AI Tools & Cursor' },
-  { id: 'web-dev-ai', name: 'Web Dev + AI' },
 ];
 
 const durationPreviews = {
+  '1day': {
+    label: '1-Day Hardware Lab (Offline)',
+    hours: '8 Hours (Single-Day Sprint)',
+    focus: 'Microcontrollers, Sonar Sensors & Embedded C',
+    capstone: 'Assemble & program an autonomous obstacle-avoiding robot on campus',
+  },
+  '2days': {
+    label: '2-Day Studio Bootcamp (Offline)',
+    hours: '14 Hours (2-Day Sprint)',
+    focus: 'GenAI Film Production, ElevenLabs & Runway Gen-3',
+    capstone: 'Direct, voice-act, score & screen a 4K AI short film in college auditorium',
+  },
   '3days': {
     label: '3-Day Fast Track',
     hours: '18 Hours',
@@ -38,7 +50,7 @@ const durationPreviews = {
 };
 
 const Hero: React.FC = () => {
-  const [activeDuration, setActiveDuration] = useState<'3days' | '5days' | '6days'>('5days');
+  const [activeDuration, setActiveDuration] = useState<'1day' | '2days' | '3days' | '5days' | '6days'>('2days');
 
   // Apple-grade spring easing
   const appleEase = [0.16, 1, 0.3, 1];
@@ -66,15 +78,15 @@ const Hero: React.FC = () => {
 
             {/* Apple-Style Main Headline */}
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold font-serif tracking-tight leading-[1.12] text-gray-900 dark:text-white mb-6">
-              Master Deeptech &amp; Applied AI in{' '}
+              Master Offline Workshops, AI Cinema &amp; Deeptech in{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 via-orange-500 to-amber-600 dark:from-yellow-400 dark:via-orange-400 dark:to-amber-400">
-                3, 5, or 6 Days.
+                1 to 6 Days.
               </span>
             </h1>
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 font-poppins leading-relaxed mb-8 max-w-2xl mx-auto lg:mx-0">
-              Industry-accredited technical syllabi engineered for engineering colleges, technical universities, and ambitious developers across India. Choose your domain, inspect the exact day-by-day curriculum, and launch hands-on workshops with live production projects.
+              Hands-on offline college workshops and accredited technical syllabi: from 1-Day Autonomous Robotics hardware labs and 2-Day AI Film Making bootcamps to full-stack engineering sprints across India.
             </p>
 
             {/* Action Buttons */}
@@ -82,7 +94,7 @@ const Hero: React.FC = () => {
               <Link to="/syllabus" className="w-full sm:w-auto">
                 <button className="w-full sm:w-auto px-7 py-3.5 rounded-xl btn-brand-gradient text-white font-semibold text-sm shadow-[0_10px_25px_-5px_rgba(249,115,22,0.35)] hover:shadow-[0_15px_30px_-5px_rgba(249,115,22,0.5)] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
                   <BookOpen className="w-4 h-4" />
-                  <span>Check 3, 5 &amp; 6-Day Syllabi</span>
+                  <span>Check All Workshop Syllabi</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </Link>
@@ -142,18 +154,18 @@ const Hero: React.FC = () => {
                 </div>
 
                 {/* Duration Pills */}
-                <div className="flex p-1 rounded-xl bg-gray-100 dark:bg-gray-800/90 text-xs font-semibold">
-                  {(['3days', '5days', '6days'] as const).map((d) => (
+                <div className="flex p-1 rounded-xl bg-gray-100 dark:bg-gray-800/90 text-xs font-semibold gap-0.5">
+                  {(['1day', '2days', '3days', '5days', '6days'] as const).map((d) => (
                     <button
                       key={d}
                       onClick={() => setActiveDuration(d)}
                       className={`px-2.5 py-1 rounded-lg transition-all duration-200 text-[11px] ${
                         activeDuration === d
-                          ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-sm'
+                          ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-sm font-bold'
                           : 'text-gray-600 dark:text-gray-400 hover:text-orange-500'
                       }`}
                     >
-                      {d === '3days' ? '3D' : d === '5days' ? '5D' : '6D'}
+                      {d === '1day' ? '1D' : d === '2days' ? '2D' : d === '3days' ? '3D' : d === '5days' ? '5D' : '6D'}
                     </button>
                   ))}
                 </div>

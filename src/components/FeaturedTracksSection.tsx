@@ -19,7 +19,10 @@ import {
   Eye,
   X,
   CheckCircle2,
-  Calendar
+  Calendar,
+  Film,
+  Cpu,
+  MapPin
 } from 'lucide-react';
 import { TRACKS_DATA, TrackData } from '../data/tracksData';
 
@@ -33,6 +36,8 @@ const iconMap: Record<string, React.FC<{ className?: string }>> = {
   Layers,
   Wand2,
   Globe,
+  Film,
+  Cpu,
 };
 
 const appleEase = [0.16, 1, 0.3, 1];
@@ -91,21 +96,23 @@ const TiltCard: React.FC<{
 };
 
 const FeaturedTracksSection: React.FC = () => {
-  const [activeFilter, setActiveFilter] = useState<'all' | 'ai' | 'fullstack' | 'applied'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'offline' | 'ai' | 'fullstack' | 'applied'>('all');
   const [quickPreviewTrack, setQuickPreviewTrack] = useState<TrackData | null>(null);
 
   const filterOptions = [
-    { id: 'all', label: 'All 9 Tech Tracks' },
-    { id: 'ai', label: 'AI, GenAI & Agentic AI' },
+    { id: 'all', label: 'All 11 Tech Tracks' },
+    { id: 'offline', label: 'Offline Workshops (1D & 2D)' },
+    { id: 'ai', label: 'AI, GenAI & Creative Media' },
     { id: 'fullstack', label: 'Full Stack Engineering' },
-    { id: 'applied', label: 'FDE & AI Tools' },
+    { id: 'applied', label: 'Robotics & Deeptech' },
   ] as const;
 
   const filteredTracks = TRACKS_DATA.filter((track) => {
     if (activeFilter === 'all') return true;
-    if (activeFilter === 'ai') return ['ai', 'genai', 'agentic-ai'].includes(track.id);
+    if (activeFilter === 'offline') return track.id === 'ai-film-making' || track.id === 'robotics' || track.deliveryMode?.toLowerCase().includes('offline');
+    if (activeFilter === 'ai') return ['ai', 'genai', 'agentic-ai', 'ai-film-making'].includes(track.id);
     if (activeFilter === 'fullstack') return ['mern-stack', 'python-fs', 'jfs', 'web-dev-ai'].includes(track.id);
-    if (activeFilter === 'applied') return ['fde', 'ai-tools', 'agentic-ai'].includes(track.id);
+    if (activeFilter === 'applied') return ['fde', 'ai-tools', 'agentic-ai', 'robotics'].includes(track.id);
     return true;
   });
 
@@ -126,12 +133,12 @@ const FeaturedTracksSection: React.FC = () => {
           <h2 className="text-3xl sm:text-5xl font-bold font-serif text-gray-900 dark:text-white tracking-tight leading-tight mb-4">
             Check Syllabi in{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-orange-500 dark:from-yellow-400 dark:to-orange-400">
-              3, 5, or 6 Days
+              1, 2, 3, 5, or 6 Days
             </span>
           </h2>
 
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 font-poppins leading-relaxed">
-            Visual project-driven roadmaps for every technical domain. Click on any card below to check the hour-by-hour code modules, practical labs, and production deliverables.
+            Hands-on offline college workshops, hardware labs, and visual project-driven roadmaps for every technical domain. Click any track to view day-by-day labs and deliverables.
           </p>
 
           {/* Filter Pills */}
@@ -221,10 +228,27 @@ const FeaturedTracksSection: React.FC = () => {
                         <span className="text-gray-500 dark:text-gray-400 font-medium flex items-center gap-1 text-[11px]">
                           <Clock className="w-3 h-3 text-orange-500" /> Formats:
                         </span>
-                        <div className="flex items-center gap-1 font-semibold text-[10px] text-gray-800 dark:text-gray-200">
-                          <span className="px-1.5 py-0.5 rounded bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600">3 Days</span>
-                          <span className="px-1.5 py-0.5 rounded bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600">5 Days</span>
-                          <span className="px-1.5 py-0.5 rounded bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600">6 Days</span>
+                        <div className="flex flex-wrap items-center gap-1 font-semibold text-[10px] text-gray-800 dark:text-gray-200">
+                          {Object.keys(track.syllabi).map((k) => {
+                            const label =
+                              k === '1day' ? '1 Day' :
+                              k === '2days' ? '2 Days' :
+                              k === '3days' ? '3 Days' :
+                              k === '5days' ? '5 Days' : '6 Days';
+                            const isOfflineHighlight = k === '1day' || k === '2days';
+                            return (
+                              <span
+                                key={k}
+                                className={`px-1.5 py-0.5 rounded border ${
+                                  isOfflineHighlight
+                                    ? 'bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 border-orange-300 dark:border-orange-800 font-bold'
+                                    : 'bg-white dark:bg-gray-700 border-gray-100 dark:border-gray-600'
+                                }`}
+                              >
+                                {label}
+                              </span>
+                            );
+                          })}
                         </div>
                       </div>
 
@@ -330,46 +354,33 @@ const FeaturedTracksSection: React.FC = () => {
                     {quickPreviewTrack.tagline}
                   </p>
 
-                  {/* 3D/5D/6D Duration Overview */}
-                  <div className="grid grid-cols-3 gap-3 mb-6">
-                    <div className="p-3 rounded-2xl bg-orange-50 dark:bg-gray-800/60 border border-orange-100 dark:border-gray-700 text-center">
-                      <span className="text-[10px] font-bold uppercase text-orange-600 dark:text-orange-400">
-                        3-Day Bootcamp
-                      </span>
-                      <p className="text-xs font-semibold text-gray-900 dark:text-white mt-1">
-                        {quickPreviewTrack.syllabi['3-day'].schedule.length} Modules
-                      </p>
-                    </div>
-
-                    <div className="p-3 rounded-2xl bg-amber-50 dark:bg-gray-800/60 border border-amber-100 dark:border-gray-700 text-center">
-                      <span className="text-[10px] font-bold uppercase text-amber-600 dark:text-amber-400">
-                        5-Day Full Deep Dive
-                      </span>
-                      <p className="text-xs font-semibold text-gray-900 dark:text-white mt-1">
-                        {quickPreviewTrack.syllabi['5-day'].schedule.length} Modules
-                      </p>
-                    </div>
-
-                    <div className="p-3 rounded-2xl bg-yellow-50 dark:bg-gray-800/60 border border-yellow-100 dark:border-gray-700 text-center">
-                      <span className="text-[10px] font-bold uppercase text-yellow-600 dark:text-yellow-400">
-                        6-Day Capstone Run
-                      </span>
-                      <p className="text-xs font-semibold text-gray-900 dark:text-white mt-1">
-                        {quickPreviewTrack.syllabi['6-day'].schedule.length} Modules
-                      </p>
-                    </div>
+                  {/* Dynamic Duration Overview */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-6">
+                    {Object.entries(quickPreviewTrack.syllabi).map(([key, syl]) => {
+                      if (!syl) return null;
+                      return (
+                        <div key={key} className="p-3 rounded-2xl bg-orange-50/70 dark:bg-gray-800/60 border border-orange-100 dark:border-gray-700 text-center">
+                          <span className="text-[10px] font-bold uppercase text-orange-600 dark:text-orange-400 block truncate">
+                            {syl.durationLabel.split(' ')[0]}
+                          </span>
+                          <p className="text-xs font-semibold text-gray-900 dark:text-white mt-1">
+                            {syl.hours}
+                          </p>
+                        </div>
+                      );
+                    })}
                   </div>
 
-                  {/* Capstone Projects */}
+                  {/* Key Learning Outcomes / Capstone */}
                   <div className="mb-6">
                     <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 block mb-2">
-                      Hands-On Capstone Project Deliverables:
+                      Key Practical Outcomes &amp; Deliverables:
                     </span>
                     <div className="space-y-1.5">
-                      {quickPreviewTrack.capstoneProjects.map((proj, pIdx) => (
+                      {quickPreviewTrack.learningOutcomes.slice(0, 3).map((outcome, pIdx) => (
                         <div key={pIdx} className="flex items-center gap-2 text-xs text-gray-700 dark:text-gray-300">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                          <span>{proj}</span>
+                          <span>{outcome}</span>
                         </div>
                       ))}
                     </div>

@@ -17,7 +17,10 @@ import {
   Layers,
   Star,
   CheckCircle2,
-  Building
+  Building,
+  Film,
+  Cpu,
+  MapPin
 } from 'lucide-react';
 import { TRACKS_DATA, TrackData } from '../data/tracksData';
 
@@ -31,6 +34,8 @@ const iconMap: Record<string, React.FC<{ className?: string }>> = {
   Layers,
   Wand2,
   Globe,
+  Film,
+  Cpu,
 };
 
 const TracksCatalogPage: React.FC = () => {
@@ -39,15 +44,24 @@ const TracksCatalogPage: React.FC = () => {
   const [selectedDurationFilter, setSelectedDurationFilter] = useState<string>('all');
 
   const categories = [
-    { id: 'all', label: 'All Tracks (9)' },
+    { id: 'all', label: 'All Tracks (11)' },
+    { id: 'offline', label: 'Offline Workshops (1D & 2D)' },
     { id: 'Artificial Intelligence', label: 'AI & GenAI' },
+    { id: 'Creative AI & Media', label: 'AI Film & Media' },
+    { id: 'Robotics & Hardware', label: 'Robotics & Hardware' },
     { id: 'Full Stack Engineering', label: 'Full Stack' },
     { id: 'Applied Deeptech', label: 'Applied Deeptech' },
   ];
 
   const filteredTracks = TRACKS_DATA.filter((track) => {
-    const matchesCategory =
-      selectedCategory === 'all' || track.category.toLowerCase() === selectedCategory.toLowerCase();
+    let matchesCategory = true;
+    if (selectedCategory === 'all') {
+      matchesCategory = true;
+    } else if (selectedCategory === 'offline') {
+      matchesCategory = track.id === 'ai-film-making' || track.id === 'robotics' || !!track.deliveryMode?.toLowerCase().includes('offline');
+    } else {
+      matchesCategory = track.category.toLowerCase() === selectedCategory.toLowerCase();
+    }
 
     const matchesSearch =
       track.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -81,9 +95,11 @@ const TracksCatalogPage: React.FC = () => {
 
           <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 font-poppins leading-relaxed">
             Every track is meticulously structured with customizable{' '}
+            <strong className="text-orange-600 dark:text-orange-400">1-Day</strong>,{' '}
+            <strong className="text-orange-600 dark:text-orange-400">2-Day</strong>,{' '}
             <strong className="text-orange-600 dark:text-orange-400">3-Day</strong>,{' '}
             <strong className="text-orange-600 dark:text-orange-400">5-Day</strong>, and{' '}
-            <strong className="text-orange-600 dark:text-orange-400">6-Day</strong> hands-on modules designed for engineering colleges, hackathons, and bootcamps across India.
+            <strong className="text-orange-600 dark:text-orange-400">6-Day</strong> hands-on modules designed for engineering colleges, hackathons, and offline workshops across India.
           </p>
         </div>
 
@@ -179,18 +195,29 @@ const TracksCatalogPage: React.FC = () => {
                     {/* Available Duration Badges */}
                     <div className="mb-4 p-2.5 rounded-xl bg-orange-50/70 dark:bg-gray-800/50 border border-orange-100 dark:border-gray-700 flex items-center justify-between text-xs">
                       <span className="text-gray-500 dark:text-gray-400 font-medium flex items-center gap-1.5 text-[11px]">
-                        <Clock className="w-3.5 h-3.5 text-orange-500" /> Syllabus Variants:
+                        <Clock className="w-3.5 h-3.5 text-orange-500" /> Formats:
                       </span>
-                      <div className="flex items-center gap-1.5">
-                        <span className="px-2 py-0.5 rounded bg-white dark:bg-gray-700 font-bold text-gray-800 dark:text-gray-200 text-[10px]">
-                          3 Days
-                        </span>
-                        <span className="px-2 py-0.5 rounded bg-white dark:bg-gray-700 font-bold text-gray-800 dark:text-gray-200 text-[10px]">
-                          5 Days
-                        </span>
-                        <span className="px-2 py-0.5 rounded bg-white dark:bg-gray-700 font-bold text-gray-800 dark:text-gray-200 text-[10px]">
-                          6 Days
-                        </span>
+                      <div className="flex flex-wrap items-center gap-1">
+                        {Object.keys(track.syllabi).map((k) => {
+                          const label =
+                            k === '1day' ? '1D' :
+                            k === '2days' ? '2D' :
+                            k === '3days' ? '3D' :
+                            k === '5days' ? '5D' : '6D';
+                          const isOfflineHighlight = k === '1day' || k === '2days';
+                          return (
+                            <span
+                              key={k}
+                              className={`px-2 py-0.5 rounded font-bold text-[10px] ${
+                                isOfflineHighlight
+                                  ? 'bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 border border-orange-300 dark:border-orange-800'
+                                  : 'bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+                              }`}
+                            >
+                              {label}
+                            </span>
+                          );
+                        })}
                       </div>
                     </div>
 
@@ -219,7 +246,7 @@ const TracksCatalogPage: React.FC = () => {
                     to={`/syllabus/${track.id}`}
                     className="flex-1 py-2.5 px-4 rounded-xl btn-brand-gradient text-white font-semibold text-xs text-center flex items-center justify-center gap-1.5 shadow-md"
                   >
-                    <span>Check Syllabus (3/5/6D)</span>
+                    <span>Check Full Syllabus</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </Link>
 
